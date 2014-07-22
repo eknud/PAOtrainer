@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    	<title>PAOtrainer - Person-Action-Object Mnemonic Tool</title>
+        <link rel="stylesheet" href="../css/metro-bootstrap.css">
+        <script src="../js/jquery-1.11.1.min.js"></script>
+        <script src="../js/metro.min.js"></script>
+<style>
+p{margin:8px;}
+.card{
+	width:150px;
+}
+
+#card1{
+	position:relative;
+	left:-125px;
+}
+#card2{
+	position:relative;
+	left:0px;
+}
+#card3{
+	position:relative;
+	left:125px;
+}
+#answer { 
+	position: absolute;
+	text-align:center;
+	top: 90px; 
+	left: 42.5%; 
+	width: 190px; 
+	font: bold 24px/45px Helvetica, Sans-Serif; 
+	letter-spacing: -1px;  
+	background: rgb(0, 0, 0); /* fallback color */
+	background: rgba(0, 0, 0, 0.7);
+	padding: 10px; 
+}
+</style>
+
+<script type="text/javascript">
+
+ $(document).ready(function(){
+  	if(localStorage["pao"]==null){
+ 		alert("You haven't created a PAO system yet!");
+ 		window.location.href="../index.html";
+ 	};
+ 	data = JSON.parse(localStorage["pao"]);
+ 	indices = [];
+ 	for(i=0; i < data.length; i++){
+ 		if(data[i].active==1){
+ 			indices.push(i);
+ 		};
+ 	};
+ 	var place1 = indices[Math.floor(Math.random()*indices.length)];
+ 	var place2 = indices[Math.floor(Math.random()*indices.length)];
+ 	var place3 = indices[Math.floor(Math.random()*indices.length)];
+ 	$("#card1").html("<img src='imgs/" + data[place1].img + ".jpg' class='card'>");
+ 	$("#card2").html("<img src='imgs/" + data[place2].img + ".jpg' class='card'>");
+ 	$("#card3").html("<img src='imgs/" + data[place3].img + ".jpg' class='card'>");
+ 	$("#answer").hide();
+	$("#answer").html("<h2 style='color:white;'>"+ data[place3].person + "<br />" + data[place2].action + "<br />" + data[place1].object + "</h2>");
+ });
+
+</script>
+
+</head>
+<body class="metro" style="text-align:center;">
+	<p align="center" style="padding:5px 0px 0px 0px;font-size:1.5em;">
+		&spades; <span style="color:red">&hearts; </span><strong>PAO</strong>trainer<span style="color:red"> &diams; </span>
+		&clubs; 
+	</p>
+
+<table align="center"><tr><td>
+	<div id="cards" style="padding-bottom:10px;">
+		<span class="card" id="card3"></span>
+		<span class="card" id="card2"></span>	
+		<span class="card" id="card1"></span>
+		<span id="answer" style="margin-left:auto;margin-right:auto;"></span>
+	</div></td></tr><tr><td>
+
+	<div id="buttons">
+		<p align="center">
+			<button class="bg-black fg-white large" id="next" style="width:200px">Next Cards</button>
+		</p>
+		<p align="center">
+			<button class="bg-red fg-white large" id="answerbut" style="width:200px">Reveal PAO</button></a>
+		</p>
+		<p align="center">
+			<span class="return">
+				<a href="../index.html"><button class="bg-black fg-white large" style="width:200px">Back to Main Menu</button></a>
+			</span>
+		</p>
+		<p align="center">
+			&copy; 2014 <a href="http://www.linkedin.com/in/eknud" target="_blank" style="color:red;">Eric Knudsen</a>
+		</p>
+	</div></td></tr></table>
+
+<!-- BEGIN JAVASCRIPT -->
+
+<script>
+
+	$("#next").click(function(){
+		$("#answer").hide();
+	 	var place1 = indices[Math.floor(Math.random()*indices.length)];
+	 	var place2 = indices[Math.floor(Math.random()*indices.length)];
+	 	var place3 = indices[Math.floor(Math.random()*indices.length)];
+	 	$("#card1").html("<img src='imgs/" + data[place1].img + ".jpg' class='card'>");
+	 	$("#card2").html("<img src='imgs/" + data[place2].img + ".jpg' class='card'>");
+	 	$("#card3").html("<img src='imgs/" + data[place3].img + ".jpg' class='card'>");
+		$("#answer").html("<h2 style='color:white;'>"+ data[place1].person + "<br />" + data[place2].action + "<br />" + data[place3].object + "</h2>");
+	});
+
+	$("#answerbut").click(function(){
+		$("#answer").show();
+	});
+
+</script>
+
+<!-- END JAVASCRIPT -->
+
+</body>
+</html>

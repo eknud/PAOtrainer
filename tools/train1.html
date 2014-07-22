@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    	<title>PAOtrainer - Person-Action-Object Mnemonic Tool</title>
+        <link rel="stylesheet" href="../css/metro-bootstrap.css">
+        <script src="../js/jquery-1.11.1.min.js"></script>
+        <script src="../js/metro.min.js"></script>
+        <style>
+        	#answer { 
+			   position: absolute;
+			   text-align:center;
+			   top: 110px; 
+			   left: 42.5%;
+			   width: 190px; 
+			   font: bold 24px/45px Helvetica, Sans-Serif; 
+			   letter-spacing: -1px;  
+			   background: rgb(0, 0, 0); /* fallback color */
+			   background: rgba(0, 0, 0, 0.7);
+			   padding: 10px; 
+			}
+		</style>
+<script type="text/javascript">
+
+ $(document).ready(function(){
+ 	if(localStorage["pao"]==null){
+ 		alert("You haven't created a PAO system yet!");
+ 		window.location.href="../index.html";
+ 	};
+ 	data = JSON.parse(localStorage["pao"]);
+ 	indices = [];
+ 	for(i=0; i < data.length; i++){
+ 		if(data[i].active==1){
+ 			indices.push(i);
+ 		};
+ 	};
+ 	var place = indices[Math.floor(Math.random()*indices.length)];
+ 	$("#cardimg").html("<img src='imgs/" + data[place].img + ".jpg' style='position:relative;'>");
+ 	$("#answer").hide();
+ 	$("#answer").html("<h2 style='color:white;'>"+ data[place].person + "<br />" + data[place].action + "<br />" + data[place].object + "</h2>");
+ });
+</script>
+
+</head>
+
+<body class="metro">
+	<p align="center" style="padding:5px 0px 0px 0px;font-size:1.5em;">
+		&spades; <span style="color:red">&hearts; </span><strong>PAO</strong>trainer<span style="color:red"> &diams; </span>
+		&clubs; 
+	</p>
+
+
+	<div id="card1" style="width:200px;margin-left:auto;margin-right:auto;padding-bottom:10px;">
+		<span id="cardimg"></span>
+		<span id="answer" style="margin-left:auto;margin-right:auto;"></span>
+	</div>
+
+	<div id="buttons">
+		<p align="center">
+			<button class="bg-black fg-white large" id="next" style="width:200px">Next Card</button>
+		</p>
+		<p align="center">
+			<button class="bg-red fg-white large" id="answerbut" style="width:200px">Reveal PAO</button></a>
+		</p>
+		<p align="center">
+			<span class="return">
+				<a href="../index.html"><button class="bg-black fg-white large" style="width:200px">Back to Main Menu</button></a>
+			</span>
+		</p>
+		<p align="center">
+			&copy; 2014 <a href="http://www.linkedin.com/in/eknud" target="_blank" style="color:red;">Eric Knudsen</a>
+		</p>
+	</div>
+
+<!-- BEGIN JAVASCRIPT -->
+
+<script>
+
+
+	$("#next").click(function(){
+		$("#answer").hide();
+ 		var place = indices[Math.floor(Math.random()*indices.length)];
+		$("#cardimg").html("<img src='imgs/" + data[place].img + ".jpg'>");
+		$("#answer").html("<h2 style='color:white;'>"+ data[place].person + "<br />" + data[place].action + "<br />" + data[place].object + "</h2>");
+	});
+
+	$("#answerbut").click(function(){
+		$("#answer").show();
+	});
+
+</script>
+
+<!-- END JAVASCRIPT -->
+
+</body>
+</html>

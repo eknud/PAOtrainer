@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    	<title>PAOtrainer - Person-Action-Object Mnemonic Tool</title>
+        <link rel="stylesheet" href="css/metro-bootstrap.css">
+        <script src="js/jquery-1.11.1.min.js"></script>
+        <script src="js/metro.min.js"></script>
+        <script src="js/pao.js"></script>
+
+        <script>
+
+        colorIndex = 0;
+
+        color = function(){
+      		if(colorIndex==0){
+      			colorIndex=1;
+      			return "color:red;";
+      		}
+      		else{
+      			colorIndex=0;
+      			return "color:black;"
+      		}
+        };
+
+        isActive = function(element){
+        	var no = "<div class='input-control checkbox'><label><input type='checkbox' /><span class='check'></span></label></div>"
+        	var yes = "<div class='input-control checkbox'><label><input type='checkbox' checked/><span class='check'></span></label></div>"
+        	if(element.active==0){
+        		return no;
+        	}
+        	else{
+        		return yes;
+        	}
+        };
+
+        personInput = function(element){
+        	return "<div class='input-control text'><input type='text' value='"+element.person+"' placeholder='Person'/></div>";
+        };
+        actionInput = function(element){
+        	return "<div class='input-control text'><input type='text' value='"+element.action+"' placeholder='Action'/></div>";
+        };
+        objectInput = function(element){
+        	return "<div class='input-control text'><input type='text' value='"+element.object+"' placeholder='Object'/></div>";
+        };
+        imgInput = function(element){
+        	return "<div class='input-control text'><input type='text' value='"+element.img+"' readonly></div>";
+        };
+
+        	$(document).ready(function(){
+
+        	 	if(localStorage["pao"] == null){
+ 					data = defaultData;
+				}
+
+ 				else{
+ 					data = JSON.parse(localStorage["pao"]);
+ 				}
+
+				$.each(data,function(index, element){  
+	     			$('#paosystem').append('<tr><td style="font-size:1.75em;'+color()+'"> '+element.card+' </td> <td> '+ isActive(element) +' </td> <td> '+ personInput(element) +' </td> <td> '+ actionInput(element)+' </td> <td> '+objectInput(element) +' </td> <td style="display:none;"> '+ imgInput(element) + '</td></tr>');
+				});
+	        	
+				$("#train").click(function(){
+	  				$("#menu1").hide();
+	  				$("#menu2").show();
+				});
+				
+				$("#return").click(function(){
+	  				$("#menu1").show();
+	  				$("#menu2").hide();
+	  			});
+
+	  			$("#save").click(function(){
+
+	  				//CONVERT PAO TO JSON
+	  				(function($){
+					    var getJsonFromTable = function(){
+					        var rows = [];
+					            $('#paosystem tr').each(function(i, n){
+					                var $row = $(n);
+					                rows.push({
+					                    card: $row.find('td:eq(0)').text(),
+					                    active: $row.find('td:eq(1) input[type=checkbox]').prop('checked'),
+					                    person: $row.find('td:eq(2) input[type=text]').prop('value'), 
+					                    action: $row.find('td:eq(3) input[type=text]').prop('value'), 
+					                   	object: $row.find('td:eq(4) input[type=text]').prop('value'), 
+					                    img: $row.find('td:eq(5) input[type=text]').prop('value')                
+					                });                
+					            });
+					            rows = rows.slice(1,53);
+					        return JSON.stringify(rows);
+					    };
+					    $(function(){        
+					    data = getJsonFromTable();
+
+					    // SAVE DATA TO LOCAL STORAGE
+					    localStorage["pao"] = data;
+					    });
+					})(jQuery);
+
+	  				alert("Save successful!");
+
+
+				});
+
+			});
+        </script>
+    <style>
+    	#paosystem, td{
+    		padding:10px 10px 10px 10px;
+    	}
+    </style>
+    </head>
+    <body class="metro">
+	<p align="center" style="padding:25px 0px 0px 0px;font-size:2em;">
+		<strong>PAO</strong>trainer<br>
+	</p>
+	<p align="center" style="font-size:2em;padding-bottom:25px;">
+		<span style="color:red">&hearts;</span>
+		&spades; 
+		<span style="color:red">&diams; </span>
+		&clubs; 
+	</p>
+
+	<div id="create">
+		<p align="center" style="padding-bottom:10px;">
+			<a href="index.html"><button class="bg-black fg-white large" style="width:200px">Back to Main Menu</button></a>
+		</p>
+		<div align="center">
+			<table id="paosystem">
+				<tr>
+					<th>Card</th><th>Active</th><th>Person ('Bob')</th><th>Action ('eating')</th><th>Object ('pizza')</th></tr>
+			</table>
+		</div>
+		<p align="center" style="font-size:125%;padding:10px 0px 10px 0px;">
+			<strong>Note</strong>: Be sure to check the <em>Active</em> box for any cards you want to train with.
+		</p>
+		<p align="center">
+			<button class="bg-red fg-white large" id="save" style="width:200px">Save PAO System</button>
+		</p>
+		<p align="center">
+			<a href="index.html"><button class="bg-black fg-white large" style="width:200px">Back to Main Menu</button></a>
+		</p>
+		<p align="center">
+			&copy; 2014 <a href="http://www.linkedin.com/in/eknud" target="_blank" style="color:red;">Eric Knudsen</a>
+		</p>
+	</div>
+
+    </body>
+</html>
